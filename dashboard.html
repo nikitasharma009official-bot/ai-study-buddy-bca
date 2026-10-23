@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - AI Study Buddy</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background: radial-gradient(at 20% 30%, #e0e7ff 0%, transparent 50%), radial-gradient(at 80% 20%, #ddd6fe 0%, transparent 40%), radial-gradient(at 50% 80%, #fef3c7 0%, transparent 50%), #f8f9ff; color:#0f172a; min-height:100vh}
+header{background:#2e5bff;color:#fff;height:72px;padding:0 32px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(46,77,240,0.25)}
+.logo{font-weight:800;font-size:22px}
+nav{display:flex;gap:12px;align-items:center;height:100%}
+nav a{color:#dbe4ff;text-decoration:none;font-size:14.5px;font-weight:500;padding:10px 14px;border-radius:8px;transition:all 0.25s ease;display:flex;align-items:center;height:40px}
+nav a:hover{color:#fff;background:rgba(255,255,255,0.18);transform:scale(1.12);font-weight:600}
+nav a.active{color:#fff;background:rgba(255,255,255,0.22);font-weight:700;border-bottom:3px solid #ffeb3b;border-radius:8px 8px 0 0}
+.container{display:flex;max-width:1350px;margin:0 auto;padding:20px;gap:20px}
+.sidebar{width:240px;background:rgba(255,255,255,0.85);backdrop-filter:blur(12px);border-radius:18px;padding:18px;box-shadow:0 10px 40px rgba(15,23,42,0.06);border:1px solid rgba(255,255,255,0.9);height:fit-content;position:sticky;top:92px; animation: fadeUp 0.6s ease-out}
+.side-title{font-weight:700;font-size:13px;color:#64748b;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.side-item{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;font-size:14px;font-weight:500;color:#475569;text-decoration:none;margin-bottom:6px;transition:0.25s}
+.side-item:hover{background:#f1f5f9;transform:translateX(4px)}
+.side-item.active{background:#0f172a;color:#fff;box-shadow:0 8px 20px rgba(15,23,42,0.15)}
+.streak{margin-top:20px;background:linear-gradient(135deg,#fff7ed,#ffedd5);border:1px solid #fed7aa;border-radius:12px;padding:14px;text-align:center}
+.streak b{color:#ea580c}
+.main{flex:1}
+.welcome{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px; animation: fadeUp 0.6s ease-out 0.1s both}
+.welcome h1{font-size:26px;font-weight:800;letter-spacing:-0.5px}
+.welcome p{color:#64748b;font-size:13px;margin-top:4px}
+.day-box{background:#0f172a;color:#fff;padding:10px 14px;border-radius:12px;text-align:center;min-width:62px; animation: float 3s ease-in-out infinite}
+.day-box b{font-size:20px;display:block;color:#fbbf24}
+.day-box small{font-size:10px;color:#94a3b8}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.sub-card{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border-radius:16px;padding:16px;box-shadow:0 8px 30px rgba(15,23,42,0.06);border:1px solid rgba(255,255,255,0.9);transition:0.3s; animation: fadeUp 0.6s ease-out both}
+.sub-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(15,23,42,0.1)}
+.sub-card:nth-child(1){animation-delay:0.2s;border-top:3px solid #22c55e}
+.sub-card:nth-child(2){animation-delay:0.3s;border-top:3px solid #3b82f6}
+.sub-card:nth-child(3){animation-delay:0.4s;border-top:3px solid #f59e0b}
+.sub-card:nth-child(4){animation-delay:0.5s;border-top:3px solid #ef4444}
+.sub-card h4{font-size:12px;font-weight:700;margin-bottom:4px}
+.sub-card p{font-size:11px;color:#64748b;margin-bottom:10px}
+.bar{height:5px;background:#f1f5f9;border-radius:99px;overflow:hidden}
+.bar div{height:100%;border-radius:99px;animation: grow 1.5s ease-out 0.8s both}
+.bar.green div{background:#22c55e;width:100%}.bar.blue div{background:#3b82f6;width:65%}.bar.orange div{background:#f59e0b;width:20%}.bar.red div{background:#ef4444;width:10%}
+.perc{font-size:11px;font-weight:600;margin-top:6px}
+.green-text{color:#16a34a}.blue-text{color:#2563eb}.orange-text{color:#d97706}.red-text{color:#dc2626}
+.bottom{display:grid;grid-template-columns:1.6fr 1fr;gap:14px}
+.box{background:rgba(255,255,255,0.9);backdrop-filter:blur(10px);border-radius:16px;padding:18px;box-shadow:0 8px 30px rgba(15,23,42,0.06);border:1px solid rgba(255,255,255,0.9); animation: fadeUp 0.6s ease-out 0.6s both}
+.box h3{font-size:14px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.task{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #f8fafc;font-size:13px}
+.task:last-child{border:none}
+.check{width:20px;height:20px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.check.done{background:#dcfce7;color:#16a34a;border:1px solid #bbf7d0}
+.check.progress{background:#dbeafe;color:#2563eb;border:1px solid #bfdbfe}
+.check.pending{border:1.5px solid #cbd5e1;color:#94a3b8;background:#fff}
+.ai-q{background:#f8fafc;padding:10px;border-radius:10px;font-size:12.5px;color:#334155;margin-bottom:10px}
+.ai-ans{background:#0f172a;color:#cbd5e1;padding:12px;border-radius:12px;font-size:11.5px;line-height:1.6}
+.ai-ans b{color:#fff}
+.ask-btn{margin-top:10px;background:#0f172a;color:#fff;width:100%;padding:10px;border-radius:10px;border:none;font-size:12px;font-weight:600;cursor:pointer;transition:0.25s}
+.ask-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,23,42,0.2)}
+footer{background:#2e4df0;color:#cbd5ff;padding:40px 32px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;max-width:1350px;margin:0 auto}
+footer h4{color:#fff;margin-bottom:12px;font-size:15px}
+footer a,footer p{color:#cbd5ff;font-size:13.5px;text-decoration:none;line-height:2}
+footer a:hover{color:#fff}
+.copy{border-top:1px solid #3b5bff;margin-top:30px;padding-top:20px;text-align:center;font-size:12px;max-width:1350px;margin:30px auto 0;color:#a5b4fc}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes grow{from{width:0}to{width:100%}}
+@media(max-width:900px){.container{flex-direction:column}.sidebar{width:100%;position:relative;top:0}.cards{grid-template-columns:1fr 1fr}.bottom{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="logo">📚 AI Study Buddy</div><nav><a href="index.html">Home</a><a class="active" href="dashboard.html">Dashboard</a><a href="assistant.html">Assistant</a><a href="planner.html">Planner</a><a href="notes.html">Notes</a><a href="quiz.html">Quiz</a><a href="progress.html">Progress</a><a href="roadmap.html">Career Roadmap</a></nav></header>
+
+<div class="container">
+<aside class="sidebar">
+<div class="side-title">🎓 BCA 5th Sem</div>
+<a class="side-item active" href="dashboard.html">📊 Dashboard</a>
+<a class="side-item" href="assistant.html">💬 AI Assistant</a>
+<a class="side-item" href="planner.html">🗓️ My Planner</a>
+<a class="side-item" href="notes.html">📝 DBMS Notes</a>
+<a class="side-item" href="quiz.html">❓ Quizzes</a>
+<div class="streak"><b>🔥 5 Day Streak</b><br><small>Keep going!</small></div>
+</aside>
+
+<div class="main">
+<div class="welcome">
+<div><h1>Welcome back, BCA Student! 👋</h1><p>Here's your progress for today - 18 Oct 2026</p></div>
+<div class="day-box"><b>🔥 5</b><small>Day Streak</small></div>
+</div>
+
+<div class="cards">
+<div class="sub-card"><h4>✅ SQL / DBMS</h4><p>SELECT, JOIN, Normalization</p><div class="bar green"><div></div></div><div class="perc green-text">100% Completed 🎉</div></div>
+<div class="sub-card"><h4>☕ JAVA</h4><p>OOPs, Inheritance</p><div class="bar blue"><div></div></div><div class="perc blue-text">65% In Progress</div></div>
+<div class="sub-card"><h4>📋 SPM</h4><p>SDLC Models</p><div class="bar orange"><div></div></div><div class="perc orange-text">20% Started</div></div>
+<div class="sub-card"><h4>🌐 Computer Network</h4><p>OSI, TCP/IP</p><div class="bar red"><div></div></div><div class="perc red-text">10% Pending</div></div>
+</div>
+
+<div class="bottom">
+<div class="box">
+<h3>🗓️ Today's Study Plan</h3>
+<div class="task"><div class="check done">✓</div><div><b>SQL</b> - SELECT, JOIN & Normalization • Done</div></div>
+<div class="task"><div class="check progress">●</div><div><b>JAVA</b> - OOPs, Inheritance & Polymorphism • In progress</div></div>
+<div class="task"><div class="check pending">○</div><div><b>SPM</b> - SDLC Models • Pending</div></div>
+<div class="task"><div class="check pending">○</div><div><b>CN</b> - OSI Model & TCP/IP Protocol • Pending</div></div>
+</div>
+<div class="box">
+<h3>🤖 Quick Ask - AI Assistant</h3>
+<div class="ai-q">Define DBMS in simple terms?</div>
+<div class="ai-ans"><b>DBMS = Database Management System</b> - Software used to store, manage and retrieve data. Eg: MySQL, Oracle, MongoDB. Prevents duplication & gives easy SQL access.</div>
+<button class="ask-btn" onclick="location.href='assistant.html'">Ask More →</button>
+</div>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="footer-grid">
+<div><h4>📚 AI Study Buddy</h4><p>Your smart AI companion for BCA. Made for BCA 5th Sem students to learn SQL, Java, SPM, CN faster.</p></div>
+<div><h4>Quick Links</h4><a href="dashboard.html">Dashboard</a><br><a href="quiz.html">Quiz</a><br><a href="notes.html">Notes</a></div>
+<div><h4>Subjects</h4><p>SQL<br>Java<br>SPM<br>Computer Network</p></div>
+<div><h4>Support</h4><p>Help Center<br>Contact Us<br>Privacy Policy</p></div>
+</div>
+<div class="copy">© 2026 AI Study Buddy - BCA Minor Project | Made with ❤️ for BCA Students</div>
+</footer>
+
+</body>
+</html>

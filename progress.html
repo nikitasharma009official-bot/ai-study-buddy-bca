@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Progress - BCA 5th Sem</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Inter', sans-serif;}
+body{background: radial-gradient(at 20% 30%, #e0e7ff 0%, transparent 50%), radial-gradient(at 80% 20%, #ddd6fe 0%, transparent 40%), radial-gradient(at 50% 80%, #fef3c7 0%, transparent 50%), #f8f9ff; display:flex; flex-direction:column; min-height:100vh}
+header{background:#2e5bff; height:72px; padding:0 32px; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(46,77,240,0.25); display:flex; align-items:center}
+header nav{display:flex; justify-content:space-between; align-items:center; max-width:1350px; margin:0 auto; width:100%; height:100%}
+header nav h2{font-size:22px; font-weight:800; color:#fff;}
+header nav ul{list-style:none; display:flex; gap:12px; align-items:center; height:100%}
+header nav ul li a{text-decoration:none; color:#dbe4ff; font-size:14.5px; font-weight:500; padding:10px 14px; border-radius:8px; transition:all 0.25s ease; display:flex; align-items:center; height:40px}
+header nav ul li a:hover{color:#fff; background:rgba(255,255,255,0.18); transform:scale(1.12); font-weight:600}
+header nav ul li a.active{color:#fff; background:rgba(255,255,255,0.22); font-weight:700; border-bottom:3px solid #ffeb3b; border-radius:8px 8px 0 0}
+
+.wrap{max-width:1350px; margin:0 auto; padding:24px 20px; width:100%; flex:1}
+.page-title{margin-bottom:22px; animation: fadeUp 0.6s ease-out}
+.page-title h1{font-size:28px; font-weight:800; color:#0f172a; letter-spacing:-0.5px}
+.page-title p{font-size:13px; color:#64748b; margin-top:6px;}
+
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+.stat{background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); border:1px solid rgba(255,255,255,0.9); border-radius:16px; padding:18px; position:relative; overflow:hidden; box-shadow:0 8px 30px rgba(15,23,42,0.05); transition:0.3s; animation: fadeUp 0.6s ease-out both}
+.stat:hover{transform:translateY(-4px); box-shadow:0 15px 35px rgba(15,23,42,0.08)}
+.stat:nth-child(1){animation-delay:0.1s} .stat:nth-child(2){animation-delay:0.2s} .stat:nth-child(3){animation-delay:0.3s} .stat:nth-child(4){animation-delay:0.4s}
+.stat::before{content:''; position:absolute; top:0; left:0; width:100%; height:4px;}
+.s1::before{background:#22c55e;} .s2::before{background:#3b82f6;} .s3::before{background:#8b5cf6;} .s4::before{background:#f59e0b;}
+.stat-top{display:flex; justify-content:space-between; align-items:center;}
+.stat-icon{width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px;}
+.i1{background:#dcfce7;} .i2{background:#dbeafe;} .i3{background:#ede9fe;} .i4{background:#fef3c7;}
+.stat h2{font-size:28px; font-weight:800; margin-top:12px; color:#0f172a;}
+.stat p{font-size:12px; font-weight:600; color:#475569; margin-top:2px;}
+.stat span{font-size:11px; color:#94a3b8; background:#f1f5f9; padding:3px 8px; border-radius:20px; display:inline-block; margin-top:8px;}
+
+.main-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:16px; margin-top:20px;}
+.card{background:rgba(255,255,255,0.9); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.9); border-radius:18px; padding:22px; box-shadow:0 10px 40px rgba(15,23,42,0.06); animation: fadeUp 0.6s ease-out both}
+.card:nth-child(1){animation-delay:0.5s} .card:nth-child(2){animation-delay:0.6s}
+.card h3{font-size:15px; font-weight:700; color:#0f172a; display:flex; align-items:center; gap:8px; margin-bottom:18px;}
+.bar-row{display:flex; align-items:center; gap:12px; margin:18px 0;}
+.bar-info{display:flex; justify-content:space-between; width:100%; margin-bottom:6px;}
+.bar-label{font-size:13px; font-weight:600; color:#334155; display:flex; align-items:center; gap:6px;}
+.bar-percent{font-size:12px; font-weight:700; color:#0f172a;}
+.bar-track{height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden; width:100%;}
+.bar-fill{height:100%; border-radius:10px; animation: grow 1.5s ease-out 0.8s both}
+
+.activity-item{margin-bottom:18px;}
+.activity-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.activity-day{font-size:13px; font-weight:600; color:#334155;}
+.activity-time{font-size:11px; font-weight:700; color:#64748b; background:#f1f5f9; padding:3px 8px; border-radius:20px;}
+.activity-track{height:8px; background:#f1f5f9; border-radius:10px; overflow:hidden;}
+.activity-fill{height:100%; border-radius:10px; animation: grow 1.5s ease-out 1s both}
+
+footer{background:#2e4df0;color:#cbd5ff;padding:40px 32px;margin-top:40px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;max-width:1350px;margin:0 auto}
+footer h4{color:#fff;margin-bottom:12px;font-size:15px}
+footer a,footer p{color:#cbd5ff;font-size:13.5px;text-decoration:none;line-height:2}
+footer a:hover{color:#fff}
+.copy{border-top:1px solid #3b5bff;margin-top:30px;padding-top:20px;text-align:center;font-size:12px;max-width:1350px;margin:30px auto 0;color:#a5b4fc}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes grow{from{width:0}to{width:100%}}
+@media(max-width:900px){.stats{grid-template-columns:1fr 1fr;} .main-grid{grid-template-columns:1fr;} .footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+<h2>📚 AI Study Buddy</h2>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="assistant.html">Assistant</a></li>
+<li><a href="planner.html">Planner</a></li>
+<li><a href="notes.html">Notes</a></li>
+<li><a href="quiz.html">Quiz</a></li>
+<li><a href="progress.html" class="active">Progress</a></li>
+<li><a href="roadmap.html">Career Roadmap</a></li>
+</ul>
+</nav>
+</header>
+
+<div class="wrap">
+<div class="page-title">
+<h1>📊 My Progress</h1>
+<p>Track your learning journey for BCA 5th Semester - Keep going! 🚀</p>
+</div>
+
+<div class="stats">
+<div class="stat s1"><div class="stat-top"><div class="stat-icon i1">✅</div><span style="font-size:11px; color:#16a34a; font-weight:800;">▲ 12%</span></div><h2 style="color:#16a34a;">75%</h2><p>Overall Completion</p><span>BCA 5th Sem</span></div>
+<div class="stat s2"><div class="stat-top"><div class="stat-icon i2">📝</div><span style="font-size:11px; color:#2563eb; font-weight:800;">+3 new</span></div><h2 style="color:#2563eb;">12</h2><p>Notes Created</p><span>This month</span></div>
+<div class="stat s3"><div class="stat-top"><div class="stat-icon i3">🎯</div><span style="font-size:11px; color:#7c3aed; font-weight:800;">Excellent</span></div><h2 style="color:#7c3aed;">80%</h2><p>Quiz Accuracy</p><span>Avg score</span></div>
+<div class="stat s4"><div class="stat-top"><div class="stat-icon i4">⏰</div><span style="font-size:11px; color:#d97706; font-weight:800;">On track</span></div><h2 style="color:#ea580c;">24h</h2><p>Study Hours</p><span>This week</span></div>
+</div>
+
+<div class="main-grid">
+<div class="card">
+<h3>📚 Subject-wise Progress</h3>
+<div>
+<div class="bar-row" style="flex-direction:column; align-items:stretch; gap:0;"><div class="bar-info"><span class="bar-label">💾 SQL - Database</span><span class="bar-percent">100%</span></div><div class="bar-track"><div class="bar-fill" style="width:100%; background:#22c55e;"></div></div></div>
+<div class="bar-row" style="flex-direction:column; align-items:stretch; gap:0;"><div class="bar-info"><span class="bar-label">☕ JAVA - OOPs</span><span class="bar-percent">65%</span></div><div class="bar-track"><div class="bar-fill" style="width:65%; background:#3b82f6;"></div></div></div>
+<div class="bar-row" style="flex-direction:column; align-items:stretch; gap:0;"><div class="bar-info"><span class="bar-label">📈 SPM - Project Mgmt</span><span class="bar-percent">40%</span></div><div class="bar-track"><div class="bar-fill" style="width:40%; background:#eab308;"></div></div></div>
+<div class="bar-row" style="flex-direction:column; align-items:stretch; gap:0;"><div class="bar-info"><span class="bar-label">🌐 CN - Networking</span><span class="bar-percent">30%</span></div><div class="bar-track"><div class="bar-fill" style="width:30%; background:#ef4444;"></div></div></div>
+</div>
+<p style="margin-top:18px; font-size:11px; color:#166534; background:#f0fdf4; border:1px dashed #22c55e; padding:12px; border-radius:12px; text-align:center; font-weight:600">💡 Tip: Focus on CN - lowest progress. 2h daily = 100% in 7 days!</p>
+</div>
+
+<div class="card">
+<h3>🎯 Weekly Activity</h3>
+<div class="activity-item"><div class="activity-top"><span class="activity-day">Monday</span><span class="activity-time">3h • SQL + JAVA</span></div><div class="activity-track"><div class="activity-fill" style="width:85%; background:#0f172a;"></div></div></div>
+<div class="activity-item"><div class="activity-top"><span class="activity-day">Tuesday</span><span class="activity-time">2h • SPM</span></div><div class="activity-track"><div class="activity-fill" style="width:50%; background:#0f172a;"></div></div></div>
+<div class="activity-item"><div class="activity-top"><span class="activity-day">Wednesday</span><span class="activity-time">4h • JAVA Lab</span></div><div class="activity-track"><div class="activity-fill" style="width:95%; background:#0f172a;"></div></div></div>
+<div class="activity-item"><div class="activity-top"><span class="activity-day">Today</span><span class="activity-time" style="background:#dbeafe; color:#1e40af;">60% • In Progress</span></div><div class="activity-track"><div class="activity-fill" style="width:60%; background:#3b82f6;"></div></div></div>
+<div style="margin-top:20px; background:linear-gradient(135deg,#0f172a,#1e40af); border-radius:14px; padding:16px; color:white; text-align:center; box-shadow:0 10px 30px rgba(15,23,42,0.2)"><p style="font-size:13px; font-weight:700;">🔥 5 Day Streak!</p><p style="font-size:11px; margin-top:4px; opacity:0.8;">Keep studying to maintain streak</p></div>
+</div>
+</div>
+</div>
+
+<footer>
+<div class="footer-grid">
+<div><h4>📚 AI Study Buddy</h4><p>Your smart AI companion for BCA. Made for BCA 5th Sem students to learn SQL, Java, SPM, CN faster.</p></div>
+<div><h4>Quick Links</h4><a href="dashboard.html">Dashboard</a><br><a href="quiz.html">Quiz</a><br><a href="notes.html">Notes</a></div>
+<div><h4>Subjects</h4><p>SQL<br>Java<br>SPM<br>Computer Network</p></div>
+<div><h4>Support</h4><p>Help Center<br>Contact Us<br>Privacy Policy</p></div>
+</div>
+<div class="copy">© 2026 AI Study Buddy - BCA Minor Project | Made with ❤️ for BCA Students</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Assistant - BCA</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Inter', sans-serif;}
+body{background: radial-gradient(at 20% 30%, #e0e7ff 0%, transparent 50%), radial-gradient(at 80% 20%, #ddd6fe 0%, transparent 40%), radial-gradient(at 50% 80%, #fef3c7 0%, transparent 50%), #f8f9ff; display:flex; flex-direction:column; min-height:100vh;}
+
+/* HEADER - 72px BADA BOX + HOVER SCALE */
+header{background:#2e5bff; height:72px; padding:0 32px; position:sticky; top:0; z-index:100; box-shadow:0 4px 20px rgba(46,77,240,0.25); display:flex; align-items:center;}
+header nav{display:flex; justify-content:space-between; align-items:center; max-width:1350px; margin:0 auto; width:100%; height:100%}
+header nav h2{font-size:22px; font-weight:800; color:#fff;}
+header nav ul{list-style:none; display:flex; gap:12px; align-items:center; height:100%}
+header nav ul li a{text-decoration:none; color:#dbe4ff; font-size:14.5px; font-weight:500; padding:10px 14px; border-radius:8px; transition:all 0.25s ease; display:flex; align-items:center; height:40px}
+header nav ul li a:hover{color:#fff; background:rgba(255,255,255,0.18); transform:scale(1.12); font-weight:600}
+header nav ul li a.active{color:#fff; background:rgba(255,255,255,0.22); font-weight:700; border-bottom:3px solid #ffeb3b; border-radius:8px 8px 0 0}
+
+.assist{display:flex; gap:18px; padding:20px; max-width:1350px; margin:0 auto; width:100%; flex:1;}
+.side{width:300px; background:rgba(255,255,255,0.9); backdrop-filter:blur(12px); border-radius:18px; padding:18px; border:1px solid rgba(255,255,255,0.9); height:calc(100vh - 130px); position:sticky; top:92px; overflow-y:auto; display:flex; flex-direction:column; box-shadow:0 10px 40px rgba(15,23,42,0.06); animation: fadeUp 0.6s ease-out}
+.side-title{font-size:11px; font-weight:800; color:#94a3b8; letter-spacing:0.8px; text-transform:uppercase; margin:18px 0 8px;}
+.side-title:first-child{margin-top:0;}
+.chat-item{font-size:12px; padding:10px 12px; background:#f8fafc; border-radius:10px; margin-bottom:6px; cursor:pointer; color:#334155; display:flex; gap:8px; border:1px solid transparent; transition:0.25s;}
+.chat-item:hover{background:#f1f5f9; border-color:#e2e8f0; transform:translateX(4px)}
+.chat-item.active{background:#0f172a; color:#fff; box-shadow:0 8px 20px rgba(15,23,42,0.15)}
+.suggest{font-size:12px; padding:10px 12px; border:1px dashed #e2e8f0; border-radius:10px; margin-bottom:6px; cursor:pointer; color:#475569; transition:0.25s; background:rgba(255,255,255,0.6)}
+.suggest:hover{background:#f0f9ff; border-color:#3b82f6; color:#1e40af; transform:translateX(3px)}
+
+.chat-area{flex:1; background:rgba(255,255,255,0.9); backdrop-filter:blur(12px); border-radius:18px; border:1px solid rgba(255,255,255,0.9); display:flex; flex-direction:column; overflow:hidden; box-shadow:0 10px 40px rgba(15,23,42,0.06); animation: fadeUp 0.6s ease-out 0.15s both}
+.chat-header{text-align:center; padding:14px; border-bottom:1px solid #f1f5f9; background:rgba(251,253,255,0.8);}
+.chat-header span{font-size:11px; font-weight:700; color:#16a34a; background:#dcfce7; padding:6px 12px; border-radius:20px; animation: pulse 2s infinite}
+.chat-msgs{flex:1; padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:4px;}
+.msg{max-width:75%; padding:14px 16px; border-radius:16px; margin:6px 0; font-size:13px; line-height:1.6; animation: msgUp 0.4s ease-out}
+.user-msg{background:#f1f5f9; align-self:flex-start; border-bottom-left-radius:4px; color:#0f172a; font-weight:500; animation-delay:0.1s}
+.ai-msg{background:#0f172a; color:#e2e8f0; align-self:flex-start; border-bottom-left-radius:4px; width:85%; max-width:85%; box-shadow:0 8px 25px rgba(15,23,42,0.15)}
+.ai-msg b{color:#fff;} .ai-msg .highlight{background:rgba(255,255,255,0.08); padding:12px; border-radius:12px; margin:10px 0; display:block; border:1px solid rgba(255,255,255,0.1)}
+.input-bar{display:flex; gap:10px; border-top:1px solid #f1f5f9; padding:14px; background:rgba(255,255,255,0.8);}
+.input-bar input{flex:1; padding:13px 16px; border-radius:12px; border:1px solid #e2e8f0; outline:none; font-size:13px; background:#f8fafc; transition:0.2s}
+.input-bar input:focus{border-color:#3b82f6; background:#fff; box-shadow:0 0 0 3px rgba(59,130,246,0.15)}
+.input-bar button{background:#0f172a; color:#fff; border:none; padding:13px 22px; border-radius:12px; cursor:pointer; font-weight:700; font-size:13px; transition:0.25s}
+.input-bar button:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,23,42,0.2); background:#1e293b}
+
+/* FOOTER SAME AS INDEX */
+footer{background:#2e4df0;color:#cbd5ff;padding:40px 32px;margin-top:30px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;max-width:1350px;margin:0 auto}
+footer h4{color:#fff;margin-bottom:12px;font-size:15px}
+footer a,footer p{color:#cbd5ff;font-size:13.5px;text-decoration:none;line-height:2}
+footer a:hover{color:#fff}
+.copy{border-top:1px solid #3b5bff;margin-top:30px;padding-top:20px;text-align:center;font-size:12px;max-width:1350px;margin:30px auto 0;color:#a5b4fc}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes msgUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
+@media(max-width:900px){.assist{flex-direction:column;} .side{width:100%; height:auto; position:static;} .footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+<nav>
+<h2>📚 AI Study Buddy</h2>
+<ul>
+<li><a href="index.html">Home</a></li>
+<li><a href="dashboard.html">Dashboard</a></li>
+<li><a href="assistant.html" class="active">Assistant</a></li>
+<li><a href="planner.html">Planner</a></li>
+<li><a href="notes.html">Notes</a></li>
+<li><a href="quiz.html">Quiz</a></li>
+<li><a href="progress.html">Progress</a></li>
+<li><a href="roadmap.html">Career Roadmap</a></li>
+</ul>
+</nav>
+</header>
+
+<div class="assist">
+<div class="side">
+<div class="side-title">💬 Recent Chats</div>
+<div class="chat-item active">🟢 Define DBMS in simple terms?</div>
+<div class="chat-item">📘 What is Normalization in SQL?</div>
+<div class="chat-item">🌐 Explain OSI Model with layers</div>
+<div class="chat-item">☕ JAVA OOPs Concept</div>
+
+<div class="side-title">📚 Suggested for BCA 5th Sem</div>
+<div class="suggest">🔑 What is Primary Key vs Foreign Key?</div>
+<div class="suggest">📈 Explain SDLC Models - Waterfall vs Agile</div>
+<div class="suggest">🎯 What is Polymorphism in JAVA?</div>
+<div class="suggest">⚡ TCP vs UDP difference?</div>
+<div class="suggest">🔗 SQL JOIN types with example</div>
+
+<div style="margin-top:auto; background:linear-gradient(135deg,#0f172a,#1e40af); border-radius:14px; padding:16px; color:#fff; text-align:center; box-shadow:0 10px 30px rgba(15,23,42,0.2)">
+<p style="font-size:13px; font-weight:700;">🚀 BCA 5th Sem Ready!</p>
+<p style="font-size:11px; opacity:0.8; margin-top:4px;">SQL, JAVA, SPM, CN - Ask anything</p>
+</div>
+</div>
+
+<div class="chat-area">
+<div class="chat-header"><span>● AI Online • BCA 5th Sem Expert • Instant Reply</span></div>
+<div class="chat-msgs">
+<div class="msg user-msg">Define DBMS in simple terms?</div>
+<div class="msg ai-msg"><b>DBMS = Database Management System</b><br><br>DBMS is a software that is used to store, manage and retrieve data from database.<br><span class="highlight"><b>🎯 Example:</b> MySQL, Oracle, MongoDB, SQL Server<br><b>✨ Features:</b> • Data Security • Data Sharing • Reduces Redundancy • Backup & Recovery</span><b>BCA Exam Tip:</b> DBMS prevents data duplication and provides easy access using SQL queries.</div>
+<div class="msg user-msg">What is Normalization in SQL?</div>
+<div class="msg ai-msg"><b>Normalization</b> is a process to organize data in database to reduce redundancy.<br><br><span class="highlight"><b>Types:</b><br>1NF - No repeating groups<br>2NF - No partial dependency<br>3NF - No transitive dependency<br>BCNF - Advanced 3NF</span>Use for clean database design!</div>
+</div>
+<div class="input-bar"><input type="text" placeholder="Ask anything about SQL, Java, SPM, CN..."><button>Send →</button></div>
+</div>
+</div>
+
+<footer>
+<div class="footer-grid">
+<div><h4>📚 AI Study Buddy</h4><p>Your smart AI companion for BCA. Made for BCA 5th Sem students to learn SQL, Java, SPM, CN faster.</p></div>
+<div><h4>Quick Links</h4><a href="dashboard.html">Dashboard</a><br><a href="quiz.html">Quiz</a><br><a href="notes.html">Notes</a></div>
+<div><h4>Subjects</h4><p>SQL<br>Java<br>SPM<br>Computer Network</p></div>
+<div><h4>Support</h4><p>Help Center<br>Contact Us<br>Privacy Policy</p></div>
+</div>
+<div class="copy">© 2026 AI Study Buddy - BCA Minor Project | Made with ❤️ for BCA Students</div>
+</footer>
+
+</body>
+</html>
